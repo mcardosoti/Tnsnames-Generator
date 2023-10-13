@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tnsnames Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            text-align: left;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        pre {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tnsnames Generator</h1>
+
+        <div class="input-group">
+            <label for="label">Label:</label>
+            <input type="text" id="label" value="MY_DB_LABEL">
+        </div>
+
+        <div class="input-group">
+            <label for="service_name">Service Name:</label>
+            <input type="text" id="service_name" value="orcl">
+        </div>
+
+        <div class="input-group">
+            <label for="host">Host:</label>
+            <input type="text" id="host" value="192.168.1.100">
+        </div>
+
+        <div class "input-group">
+            <label for="port">Port:</label>
+            <input type="text" id="port" value="1521">
+        </div>
+
+        <div class="input-group">
+            <label for="instance_name">Instance Name:</label>
+            <input type="text" id="instance_name" value="INSTANCE">
+        </div>
+
+        <button onclick="generateTnsnames()">Generate Tnsnames</button>
+        <button onclick="clearFields()">Clear</button>
+        <button onclick="copyToClipboard()">Copy to Clipboard</button>
+
+        <pre id="tnsnames"></pre>
+    </div>
+
+    <script>
+        function generateTnsnames() {
+            const label = document.getElementById("label").value;
+            const service_name = document.getElementById("service_name").value;
+            const host = document.getElementById("host").value;
+            const port = document.getElementById("port").value;
+            const instance_name = document.getElementById("instance_name").value;
+
+            const tnsnames = `${label} =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = ${host})(PORT = ${port}))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = ${service_name})
+      (INSTANCE_NAME = ${instance_name})
+    )
+  )`;
+
+            document.getElementById("tnsnames").textContent = tnsnames;
+        }
+
+        function clearFields() {
+            document.getElementById("label").value = "";
+            document.getElementById("service_name").value = "";
+            document.getElementById("host").value = "";
+            document.getElementById("port").value = "";
+            document.getElementById("instance_name").value = "";
+            document.getElementById("tnsnames").textContent = "";
+        }
+
+        function copyToClipboard() {
+            const tnsnames = document.getElementById("tnsnames").textContent;
+            if (tnsnames) {
+                const textArea = document.createElement("textarea");
+                textArea.value = tnsnames;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+                alert("TNSnames copied to clipboard!");
+            }
+        }
+    </script>
+</body>
+</html>
